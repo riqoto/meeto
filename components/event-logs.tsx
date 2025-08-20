@@ -1,0 +1,494 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
+import { StatCard } from "@/components/ui/stat-card"
+import { BreathingDot } from "@/components/ui/breathing-dot"
+import { UserProfileModal } from "@/components/ui/user-profile-modal"
+import {
+  Search,
+  Download,
+  RefreshCw,
+  LogIn,
+  LogOut,
+  QrCode,
+  Users,
+  AlertTriangle,
+  Info,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Calendar,
+} from "lucide-react"
+
+interface EventLog {
+  id: string
+  timestamp: string
+  type: "checkin" | "checkout" | "qr_scan" | "session_join" | "session_leave" | "system" | "error" | "admin"
+  user?: {
+    name: string
+    email: string
+    avatar?: string
+  }
+  action: string
+  details: string
+  location?: string
+  sessionId?: string
+  severity: "low" | "medium" | "high" | "critical"
+  metadata?: Record<string, any>
+}
+
+const mockEventLogs: EventLog[] = [
+  {
+    id: "1",
+    timestamp: "2024-01-20T14:32:15Z",
+    type: "checkin",
+    user: {
+      name: "Sarah Johnson",
+      email: "sarah.johnson@techcorp.com",
+      avatar: "/placeholder.svg?height=32&width=32",
+    },
+    action: "User Check-in",
+    details: "Successfully checked in via QR code",
+    location: "Main Entrance",
+    severity: "low",
+  },
+  {
+    id: "2",
+    timestamp: "2024-01-20T14:31:45Z",
+    type: "qr_scan",
+    user: {
+      name: "Mike Chen",
+      email: "mike.chen@designstudio.com",
+      avatar: "/placeholder.svg?height=32&width=32",
+    },
+    action: "QR Code Scan",
+    details: "Scanned session entry QR for Tech Talk A",
+    location: "Room 101",
+    sessionId: "tech-talk-a",
+    severity: "low",
+  },
+  {
+    id: "3",
+    timestamp: "2024-01-20T14:30:22Z",
+    type: "session_join",
+    user: {
+      name: "Emma Davis",
+      email: "emma.davis@startup.io",
+      avatar: "/placeholder.svg?height=32&width=32",
+    },
+    action: "Session Join",
+    details: "Joined Workshop B - Advanced React Patterns",
+    location: "Room 205",
+    sessionId: "workshop-b",
+    severity: "low",
+  },
+  {
+    id: "4",
+    timestamp: "2024-01-20T14:29:18Z",
+    type: "error",
+    user: {
+      name: "Alex Rivera",
+      email: "alex.rivera@university.edu",
+    },
+    action: "Check-in Failed",
+    details: "QR code scan failed - invalid format",
+    location: "Side Entrance",
+    severity: "medium",
+  },
+  {
+    id: "5",
+    timestamp: "2024-01-20T14:28:55Z",
+    type: "system",
+    action: "Session Capacity Alert",
+    details: "Keynote session reached 90% capacity",
+    location: "Main Auditorium",
+    sessionId: "keynote",
+    severity: "medium",
+  },
+  {
+    id: "6",
+    timestamp: "2024-01-20T14:27:33Z",
+    type: "admin",
+    user: {
+      name: "Admin User",
+      email: "admin@meeeto.com",
+    },
+    action: "Manual Check-in",
+    details: "Manually checked in user due to QR code issue",
+    location: "Registration Desk",
+    severity: "low",
+  },
+  {
+    id: "7",
+    timestamp: "2024-01-20T14:26:12Z",
+    type: "checkout",
+    user: {
+      name: "David Kim",
+      email: "david.kim@enterprise.com",
+      avatar: "/placeholder.svg?height=32&width=32",
+    },
+    action: "User Check-out",
+    details: "Checked out from conference",
+    location: "Main Exit",
+    severity: "low",
+  },
+  {
+    id: "8",
+    timestamp: "2024-01-20T14:25:44Z",
+    type: "session_leave",
+    user: {
+      name: "Lisa Wang",
+      email: "lisa.wang@techstart.com",
+    },
+    action: "Session Leave",
+    details: "Left Panel Discussion early",
+    location: "Room 301",
+    sessionId: "panel-discussion",
+    severity: "low",
+  },
+]
+
+export function EventLogs() {
+  const [logs, setLogs] = useState<EventLog[]>(mockEventLogs)
+  const [filteredLogs, setFilteredLogs] = useState<EventLog[]>(mockEventLogs)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [typeFilter, setTypeFilter] = useState<string>("all")
+  const [severityFilter, setSeverityFilter] = useState<string>("all")
+  const [isLoading, setIsLoading] = useState(false)
+  const [autoRefresh, setAutoRefresh] = useState(true)
+  const [selectedUser, setSelectedUser] = useState<EventLog["user"] | null>(null)
+
+  useEffect(() => {
+    if (!autoRefresh) return
+
+    const interval = setInterval(() => {
+      const newLog: EventLog = {
+        id: Date.now().toString(),
+        timestamp: new Date().toISOString(),
+        type: ["checkin", "checkout", "qr_scan", "session_join"][Math.floor(Math.random() * 4)] as EventLog["type"],
+        user: {
+          name: ["John Doe", "Jane Smith", "Bob Wilson"][Math.floor(Math.random() * 3)],
+          email: "user@example.com",
+        },
+        action: "Real-time Event",
+        details: "Simulated real-time event log entry",
+        location: ["Main Entrance", "Room 101", "Room 205"][Math.floor(Math.random() * 3)],
+        severity: "low" as const,
+      }
+
+      setLogs((prev) => [newLog, ...prev.slice(0, 49)])
+    }, 10000)
+
+    return () => clearInterval(interval)
+  }, [autoRefresh])
+
+  useEffect(() => {
+    let filtered = logs
+
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (log) =>
+          log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          log.details.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          log.user?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          log.user?.email.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
+    }
+
+    if (typeFilter !== "all") {
+      filtered = filtered.filter((log) => log.type === typeFilter)
+    }
+
+    if (severityFilter !== "all") {
+      filtered = filtered.filter((log) => log.severity === severityFilter)
+    }
+
+    setFilteredLogs(filtered)
+  }, [logs, searchTerm, typeFilter, severityFilter])
+
+  const handleRefresh = async () => {
+    setIsLoading(true)
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    setIsLoading(false)
+  }
+
+  const getTypeIcon = (type: EventLog["type"]) => {
+    switch (type) {
+      case "checkin":
+        return <LogIn className="h-4 w-4 text-green-500" />
+      case "checkout":
+        return <LogOut className="h-4 w-4 text-red-500" />
+      case "qr_scan":
+        return <QrCode className="h-4 w-4 text-blue-500" />
+      case "session_join":
+        return <Users className="h-4 w-4 text-purple-500" />
+      case "session_leave":
+        return <Users className="h-4 w-4 text-orange-500" />
+      case "system":
+        return <Info className="h-4 w-4 text-blue-500" />
+      case "error":
+        return <XCircle className="h-4 w-4 text-red-500" />
+      case "admin":
+        return <CheckCircle className="h-4 w-4 text-green-500" />
+      default:
+        return <Clock className="h-4 w-4 text-gray-500" />
+    }
+  }
+
+  const getTypeBadge = (type: EventLog["type"]) => {
+    const variants = {
+      checkin: "default",
+      checkout: "secondary",
+      qr_scan: "outline",
+      session_join: "default",
+      session_leave: "secondary",
+      system: "outline",
+      error: "destructive",
+      admin: "default",
+    } as const
+
+    return (
+      <Badge variant={variants[type] || "outline"} className="capitalize">
+        {type.replace("_", " ")}
+      </Badge>
+    )
+  }
+
+  const getSeverityBadge = (severity: EventLog["severity"]) => {
+    const colors = {
+      low: "bg-green-100 text-green-800 hover:bg-green-100",
+      medium: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
+      high: "bg-orange-100 text-orange-800 hover:bg-orange-100",
+      critical: "bg-red-100 text-red-800 hover:bg-red-100",
+    }
+
+    return (
+      <Badge className={colors[severity]} variant="secondary">
+        {severity}
+      </Badge>
+    )
+  }
+
+  const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
+
+    if (diffInMinutes < 1) return "Just now"
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`
+    return date.toLocaleDateString()
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-4 md:grid-cols-4">
+        <StatCard
+          title="Toplam Etkinlikler"
+          value={logs.length.toString()}
+          description="Son 24 saat"
+          icon={Calendar}
+          iconColor="text-slate-500"
+        />
+        <StatCard
+          title="Giriş Yapanlar"
+          value={logs.filter((l) => l.type === "checkin").length.toString()}
+          description="Bugün"
+          icon={LogIn}
+          iconColor="text-green-500"
+        />
+        <StatCard
+          title="QR Taramaları"
+          value={logs.filter((l) => l.type === "qr_scan").length.toString()}
+          description="Bugün"
+          icon={QrCode}
+          iconColor="text-blue-500"
+        />
+        <StatCard
+          title="Hatalar"
+          value={logs.filter((l) => l.type === "error").length.toString()}
+          description="Dikkat gerekiyor"
+          icon={AlertTriangle}
+          iconColor="text-red-500"
+        />
+      </div>
+
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col items-center justify-between md:flex-row">
+            <div>
+              <CardTitle>Etkinlik Günlükleri</CardTitle>
+              <CardDescription>Gerçek zamanlı sistem olayları ve kullanıcı aktiviteleri</CardDescription>
+            </div>
+            <div className="flex mt-4 items-center gap-2 md:mt-0">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setAutoRefresh(!autoRefresh)}
+                className={autoRefresh ? "bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800" : ""}
+              >
+                {autoRefresh ? <BreathingDot className="mr-2" /> : <RefreshCw className="h-4 w-4 mr-2" />}
+                {autoRefresh ? "Canlı" : "Duraklatıldı"}
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isLoading}>
+                <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`} />
+                Yenile
+              </Button>
+              <Button variant="outline" size="sm">
+                <Download className="h-4 w-4 mr-2" />
+                Dışa Aktar
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-4 mb-6">
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Etkinlikleri ara..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
+              <SelectTrigger className="w-[150px]">
+                <SelectValue placeholder="Etkinlik Türü" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tüm Türler</SelectItem>
+                <SelectItem value="checkin">Giriş</SelectItem>
+                <SelectItem value="checkout">Çıkış</SelectItem>
+                <SelectItem value="qr_scan">QR Tarama</SelectItem>
+                <SelectItem value="session_join">Oturum Katılımı</SelectItem>
+                <SelectItem value="session_leave">Oturum Ayrılması</SelectItem>
+                <SelectItem value="system">Sistem</SelectItem>
+                <SelectItem value="error">Hata</SelectItem>
+                <SelectItem value="admin">Yönetici</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={severityFilter} onValueChange={setSeverityFilter}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Önem Derecesi" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tüm Seviyeler</SelectItem>
+                <SelectItem value="low">Düşük</SelectItem>
+                <SelectItem value="medium">Orta</SelectItem>
+                <SelectItem value="high">Yüksek</SelectItem>
+                <SelectItem value="critical">Kritik</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="rounded-md border w-full">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Zaman</TableHead>
+                  <TableHead>Tür</TableHead>
+                  <TableHead>Kullanıcı</TableHead>
+                  <TableHead>Eylem</TableHead>
+                  <TableHead>Detaylar</TableHead>
+                  <TableHead>Konum</TableHead>
+                  <TableHead>Önem</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <Skeleton className="h-4 w-16" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-20" />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Skeleton className="h-8 w-8 rounded-full" />
+                          <Skeleton className="h-4 w-32" />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-24" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-48" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-20" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-16" />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : filteredLogs.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                      Filtrelerinizle eşleşen etkinlik bulunamadı
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filteredLogs.map((log) => (
+                    <TableRow key={log.id}>
+                      <TableCell className="text-sm">{formatTimestamp(log.timestamp)}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          {getTypeIcon(log.type)}
+                          {getTypeBadge(log.type)}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {log.user ? (
+                          <div
+                            className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 rounded p-1 -m-1"
+                            onClick={() => setSelectedUser(log.user)}
+                          >
+                            <Avatar className="h-8 w-8">
+                              <AvatarImage src={log.user.avatar || "/placeholder.svg"} alt={log.user.name} />
+                              <AvatarFallback className="text-xs">
+                                {log.user.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="font-medium text-sm">{log.user.name}</div>
+                              <div className="text-xs text-muted-foreground">{log.user.email}</div>
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground">Sistem</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="font-medium">{log.action}</TableCell>
+                      <TableCell className="max-w-xs truncate" title={log.details}>
+                        {log.details}
+                      </TableCell>
+                      <TableCell>{log.location || "-"}</TableCell>
+                      <TableCell>{getSeverityBadge(log.severity)}</TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <UserProfileModal user={selectedUser} isOpen={!!selectedUser} onClose={() => setSelectedUser(null)} />
+    </div>
+  )
+}
