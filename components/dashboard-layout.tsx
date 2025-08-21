@@ -100,7 +100,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="fixed top-0 right-0 left-0 lg:left-64 h-16 border-b flex items-center justify-between px-6 z-50">
+        <header className="fixed top-0 right-0 left-0 lg:left-64 h-16 border-b bg-card/50 backdrop-blur-sm flex items-center justify-between px-6 z-50">
   <div className="flex  items-center gap-4">
     <Button 
       variant="ghost" 
@@ -127,7 +127,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto p-6 pb-12 mt-16">{children}</main>
+        <main className="flex-1 overflow-auto p-12 my-16">{children}</main>
       </div>
     </div>
   )
