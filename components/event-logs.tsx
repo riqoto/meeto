@@ -28,6 +28,7 @@ import {
   Calendar,
 } from "lucide-react"
 
+
 interface EventLog {
   id: string
   timestamp: string
@@ -44,6 +45,25 @@ interface EventLog {
   severity: "low" | "medium" | "high" | "critical"
   metadata?: Record<string, any>
 }
+const translate = {
+  types: {
+    checkin: "Giriş",
+    checkout: "Çıkış",
+    qr_scan: "QR Tarama",
+    session_join: "Oturum Katılımı",
+    session_leave: "Oturum Ayrılması",
+    system: "Sistem",
+    error: "Hata",
+    admin: "Yönetici"
+  },
+  severity: {
+    low: "Düşük",
+    medium: "Orta",
+    high: "Yüksek",
+    critical: "Kritik"
+  }
+} as const
+
 
 const mockEventLogs: EventLog[] = [
   {
@@ -51,13 +71,13 @@ const mockEventLogs: EventLog[] = [
     timestamp: "2024-01-20T14:32:15Z",
     type: "checkin",
     user: {
-      name: "Sarah Johnson",
-      email: "sarah.johnson@techcorp.com",
+      name: "Ayşe Yılmaz",
+      email: "ayse.yilmaz@teknosoft.com",
       avatar: "/placeholder.svg?height=32&width=32",
     },
-    action: "User Check-in",
-    details: "Successfully checked in via QR code",
-    location: "Main Entrance",
+    action: "Kullanıcı Girişi",
+    details: "QR kod ile başarılı giriş yapıldı",
+    location: "Ana Giriş",
     severity: "low",
   },
   {
@@ -65,13 +85,13 @@ const mockEventLogs: EventLog[] = [
     timestamp: "2024-01-20T14:31:45Z",
     type: "qr_scan",
     user: {
-      name: "Mike Chen",
-      email: "mike.chen@designstudio.com",
+      name: "Mehmet Can",
+      email: "mehmet.can@tasarimci.com",
       avatar: "/placeholder.svg?height=32&width=32",
     },
-    action: "QR Code Scan",
-    details: "Scanned session entry QR for Tech Talk A",
-    location: "Room 101",
+    action: "QR Kod Tarama",
+    details: "Teknoloji Sunumu A için oturum QR kodu tarandı",
+    location: "Oda 101",
     sessionId: "tech-talk-a",
     severity: "low",
   },
@@ -80,13 +100,13 @@ const mockEventLogs: EventLog[] = [
     timestamp: "2024-01-20T14:30:22Z",
     type: "session_join",
     user: {
-      name: "Emma Davis",
-      email: "emma.davis@startup.io",
+      name: "Elif Demir",
+      email: "elif.demir@girisim.io",
       avatar: "/placeholder.svg?height=32&width=32",
     },
-    action: "Session Join",
-    details: "Joined Workshop B - Advanced React Patterns",
-    location: "Room 205",
+    action: "Oturuma Katılım",
+    details: "Atölye B - İleri Seviye React Patterns oturumuna katıldı",
+    location: "Oda 205",
     sessionId: "workshop-b",
     severity: "low",
   },
@@ -95,21 +115,21 @@ const mockEventLogs: EventLog[] = [
     timestamp: "2024-01-20T14:29:18Z",
     type: "error",
     user: {
-      name: "Alex Rivera",
-      email: "alex.rivera@university.edu",
+      name: "Ali Rıza",
+      email: "ali.riza@universite.edu.tr",
     },
-    action: "Check-in Failed",
-    details: "QR code scan failed - invalid format",
-    location: "Side Entrance",
+    action: "Giriş Başarısız",
+    details: "QR kod tarama hatası - geçersiz format",
+    location: "Yan Giriş",
     severity: "medium",
   },
   {
     id: "5",
     timestamp: "2024-01-20T14:28:55Z",
     type: "system",
-    action: "Session Capacity Alert",
-    details: "Keynote session reached 90% capacity",
-    location: "Main Auditorium",
+    action: "Oturum Kapasite Uyarısı",
+    details: "Açılış konuşması %90 doluluk oranına ulaştı",
+    location: "Ana Salon",
     sessionId: "keynote",
     severity: "medium",
   },
@@ -118,12 +138,12 @@ const mockEventLogs: EventLog[] = [
     timestamp: "2024-01-20T14:27:33Z",
     type: "admin",
     user: {
-      name: "Admin User",
+      name: "Yönetici",
       email: "admin@meeeto.com",
     },
-    action: "Manual Check-in",
-    details: "Manually checked in user due to QR code issue",
-    location: "Registration Desk",
+    action: "Manuel Giriş",
+    details: "QR kod sorunu nedeniyle kullanıcı manuel olarak giriş yaptırıldı",
+    location: "Kayıt Masası",
     severity: "low",
   },
   {
@@ -131,13 +151,13 @@ const mockEventLogs: EventLog[] = [
     timestamp: "2024-01-20T14:26:12Z",
     type: "checkout",
     user: {
-      name: "David Kim",
-      email: "david.kim@enterprise.com",
+      name: "Deniz Kaya",
+      email: "deniz.kaya@kurumsal.com",
       avatar: "/placeholder.svg?height=32&width=32",
     },
-    action: "User Check-out",
-    details: "Checked out from conference",
-    location: "Main Exit",
+    action: "Kullanıcı Çıkışı",
+    details: "Konferanstan çıkış yapıldı",
+    location: "Ana Çıkış",
     severity: "low",
   },
   {
@@ -145,12 +165,12 @@ const mockEventLogs: EventLog[] = [
     timestamp: "2024-01-20T14:25:44Z",
     type: "session_leave",
     user: {
-      name: "Lisa Wang",
-      email: "lisa.wang@techstart.com",
+      name: "Zeynep Ak",
+      email: "zeynep.ak@teknostart.com",
     },
-    action: "Session Leave",
-    details: "Left Panel Discussion early",
-    location: "Room 301",
+    action: "Oturumdan Ayrılma",
+    details: "Panel Tartışmasından erken ayrıldı",
+    location: "Oda 301",
     sessionId: "panel-discussion",
     severity: "low",
   },
@@ -167,29 +187,28 @@ export function EventLogs() {
   const [selectedUser, setSelectedUser] = useState<EventLog["user"] | null>(null)
 
   useEffect(() => {
-    if (!autoRefresh) return
+  if (!autoRefresh) return
 
-    const interval = setInterval(() => {
-      const newLog: EventLog = {
-        id: Date.now().toString(),
-        timestamp: new Date().toISOString(),
-        type: ["checkin", "checkout", "qr_scan", "session_join"][Math.floor(Math.random() * 4)] as EventLog["type"],
-        user: {
-          name: ["John Doe", "Jane Smith", "Bob Wilson"][Math.floor(Math.random() * 3)],
-          email: "user@example.com",
-        },
-        action: "Real-time Event",
-        details: "Simulated real-time event log entry",
-        location: ["Main Entrance", "Room 101", "Room 205"][Math.floor(Math.random() * 3)],
-        severity: "low" as const,
-      }
+  const interval = setInterval(() => {
+    const newLog: EventLog = {
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+      type: ["checkin", "checkout", "qr_scan", "session_join"][Math.floor(Math.random() * 4)] as EventLog["type"],
+      user: {
+        name: ["Ayşe Yılmaz", "Mehmet Can", "Elif Demir", "Ali Rıza"][Math.floor(Math.random() * 4)],
+        email: "kullanici@ornek.com",
+      },
+      action: "Gerçek Zamanlı Olay",
+      details: "Simüle edilmiş gerçek zamanlı olay kaydı",
+      location: ["Ana Giriş", "Oda 101", "Oda 205"][Math.floor(Math.random() * 3)],
+      severity: "low" as const,
+    }
 
-      setLogs((prev) => [newLog, ...prev.slice(0, 49)])
-    }, 10000)
+    setLogs((prev) => [newLog, ...prev.slice(0, 49)])
+  }, 10000)
 
-    return () => clearInterval(interval)
-  }, [autoRefresh])
-
+  return () => clearInterval(interval)
+}, [autoRefresh])
   useEffect(() => {
     let filtered = logs
 
@@ -244,47 +263,48 @@ export function EventLogs() {
   }
 
   const getTypeBadge = (type: EventLog["type"]) => {
-    const variants = {
-      checkin: "default",
-      checkout: "secondary",
-      qr_scan: "outline",
-      session_join: "default",
-      session_leave: "secondary",
-      system: "outline",
-      error: "destructive",
-      admin: "default",
-    } as const
+  const variants = {
+    checkin: "default",
+    checkout: "secondary",
+    qr_scan: "outline",
+    session_join: "default",
+    session_leave: "secondary",
+    system: "outline",
+    error: "destructive",
+    admin: "default",
+  } as const
 
-    return (
-      <Badge variant={variants[type] || "outline"} className="capitalize">
-        {type.replace("_", " ")}
-      </Badge>
-    )
+  return (
+    <Badge variant={variants[type] || "outline"} className="capitalize">
+      {translate.types[type]}
+    </Badge>
+  )
+}
+
+// getSeverityBadge fonksiyonunu güncelle
+const getSeverityBadge = (severity: EventLog["severity"]) => {
+  const colors = {
+    low: "bg-green-100 text-green-800 hover:bg-green-100",
+    medium: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
+    high: "bg-orange-100 text-orange-800 hover:bg-orange-100",
+    critical: "bg-red-100 text-red-800 hover:bg-red-100",
   }
 
-  const getSeverityBadge = (severity: EventLog["severity"]) => {
-    const colors = {
-      low: "bg-green-100 text-green-800 hover:bg-green-100",
-      medium: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
-      high: "bg-orange-100 text-orange-800 hover:bg-orange-100",
-      critical: "bg-red-100 text-red-800 hover:bg-red-100",
-    }
-
-    return (
-      <Badge className={colors[severity]} variant="secondary">
-        {severity}
-      </Badge>
-    )
-  }
+  return (
+    <Badge className={colors[severity]} variant="secondary">
+      {translate.severity[severity]}
+    </Badge>
+  )
+}
 
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp)
     const now = new Date()
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
 
-    if (diffInMinutes < 1) return "Just now"
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`
+    if (diffInMinutes < 1) return "  saniye önce"
+    if (diffInMinutes < 60) return `${diffInMinutes} dakika önce`
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} saat önce`
     return date.toLocaleDateString()
   }
 
@@ -365,29 +385,27 @@ export function EventLogs() {
               <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
                 <SelectValue placeholder="Etkinlik Türü" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tüm Türler</SelectItem>
-                <SelectItem value="checkin">Giriş</SelectItem>
-                <SelectItem value="checkout">Çıkış</SelectItem>
-                <SelectItem value="qr_scan">QR Tarama</SelectItem>
-                <SelectItem value="session_join">Oturum Katılımı</SelectItem>
-                <SelectItem value="session_leave">Oturum Ayrılması</SelectItem>
-                <SelectItem value="system">Sistem</SelectItem>
-                <SelectItem value="error">Hata</SelectItem>
-                <SelectItem value="admin">Yönetici</SelectItem>
-              </SelectContent>
+            <SelectContent>
+            <SelectItem value="all">Tüm Türler</SelectItem>
+              {Object.entries(translate.types).map(([key, value]) => (
+                <SelectItem key={key} value={key}>
+                  {value}
+                </SelectItem>
+              ))}
+            </SelectContent>
             </Select>
             <Select value={severityFilter} onValueChange={setSeverityFilter}>
               <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
                 <SelectValue placeholder="Önem Derecesi" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tüm Seviyeler</SelectItem>
-                <SelectItem value="low">Düşük</SelectItem>
-                <SelectItem value="medium">Orta</SelectItem>
-                <SelectItem value="high">Yüksek</SelectItem>
-                <SelectItem value="critical">Kritik</SelectItem>
-              </SelectContent>
+            <SelectContent>
+              <SelectItem value="all">Tüm Seviyeler</SelectItem>
+                {Object.entries(translate.severity).map(([key, value]) => (
+                  <SelectItem key={key} value={key}>
+                    {value}
+              </SelectItem>
+                ))}
+            </SelectContent>
             </Select>
             </div>
           </div>
