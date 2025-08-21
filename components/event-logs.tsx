@@ -328,7 +328,7 @@ export function EventLogs() {
               <CardTitle>Etkinlik Günlükleri</CardTitle>
               <CardDescription>Gerçek zamanlı sistem olayları ve kullanıcı aktiviteleri</CardDescription>
             </div>
-            <div className="flex justify-between bg-red-300 w-full md:w-auto mt-4 items-center gap-2 md:mt-0">
+            <div className="flex justify-between w-full md:w-auto mt-4 items-center gap-2 md:mt-0">
               <Button
                 variant="outline"
                 size="sm"
