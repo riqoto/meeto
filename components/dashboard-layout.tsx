@@ -127,7 +127,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto p-6 my-16 ">{children}</main>
+        <main className="flex-1 overflow-auto p-2 md:p-6 my-16 ">{children}</main>
       </div>
     </div>
   )
