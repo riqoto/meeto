@@ -30,51 +30,51 @@ interface User {
 }
 
 const mockUsers: User[] = [
-  {
+    {
     id: "1",
-    name: "Sarah Johnson",
-    email: "sarah.johnson@techcorp.com",
-    phone: "+1 (555) 123-4567",
-    company: "TechCorp Inc.",
+    name: "Ayşe Yılmaz",
+    email: "ayse.yilmaz@teknosoft.com",
+    phone: "+90 (532) 123-4567",
+    company: "TeknoSoft A.Ş.",
     role: "Developer",
     status: "checked-in",
-    checkInTime: "09:15 AM",
-    lastSeen: "2 min ago",
-    sessions: ["Keynote", "Tech Talk A"],
+    checkInTime: "09:15",
+    lastSeen: "2 dk önce",
+    sessions: ["Açılış Konuşması", "Teknoloji Sunumu A"],
     avatar: "/placeholder.svg?height=40&width=40",
   },
   {
     id: "2",
-    name: "Mike Chen",
-    email: "mike.chen@designstudio.com",
-    phone: "+1 (555) 234-5678",
-    company: "Design Studio",
+    name: "Mehmet Can",
+    email: "mehmet.can@tasarimci.com",
+    phone: "+90 (533) 234-5678",
+    company: "Tasarım Stüdyo",
     role: "Designer",
     status: "checked-in",
-    checkInTime: "08:45 AM",
-    lastSeen: "5 min ago",
-    sessions: ["Workshop B", "Panel Discussion"],
+    checkInTime: "08:45",
+    lastSeen: "5 dk önce",
+    sessions: ["Atölye B", "Panel Tartışması"],
     avatar: "/placeholder.svg?height=40&width=40",
   },
   {
     id: "3",
-    name: "Emma Davis",
-    email: "emma.davis@startup.io",
-    phone: "+1 (555) 345-6789",
-    company: "Startup.io",
+    name: "Elif Demir",
+    email: "elif.demir@girisim.io",
+    phone: "+90 (535) 345-6789",
+    company: "Girisim.io",
     role: "Product Manager",
     status: "checked-out",
-    checkInTime: "10:30 AM",
-    lastSeen: "1 hour ago",
-    sessions: ["Keynote"],
+    checkInTime: "10:30",
+    lastSeen: "1 saat önce",
+    sessions: ["Açılış Konuşması"],
     avatar: "/placeholder.svg?height=40&width=40",
   },
   {
     id: "4",
-    name: "Alex Rivera",
-    email: "alex.rivera@university.edu",
-    phone: "+1 (555) 456-7890",
-    company: "State University",
+    name: "Ali Rıza",
+    email: "ali.riza@universite.edu.tr",
+    phone: "+90 (536) 456-7890",
+    company: "Devlet Üniversitesi",
     role: "Student",
     status: "registered",
     sessions: [],
@@ -82,15 +82,15 @@ const mockUsers: User[] = [
   },
   {
     id: "5",
-    name: "David Kim",
-    email: "david.kim@enterprise.com",
-    phone: "+1 (555) 567-8901",
-    company: "Enterprise Solutions",
+    name: "Deniz Kaya",
+    email: "deniz.kaya@kurumsal.com",
+    phone: "+90 (537) 567-8901",
+    company: "Kurumsal Çözümler Ltd.",
     role: "Developer",
     status: "checked-in",
-    checkInTime: "09:00 AM",
-    lastSeen: "10 min ago",
-    sessions: ["Tech Talk A", "Workshop B", "Networking"],
+    checkInTime: "09:00",
+    lastSeen: "10 dk önce",
+    sessions: ["Teknoloji Sunumu A", "Atölye B", "Networking"],
     avatar: "/placeholder.svg?height=40&width=40",
   },
 ]
@@ -140,7 +140,7 @@ export function UserManagement() {
                 newStatus === "checked-in"
                   ? new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
                   : user.checkInTime,
-              lastSeen: newStatus === "checked-in" ? "Just now" : user.lastSeen,
+              lastSeen: newStatus === "checked-in" ? "Şimdi" : user.lastSeen,
             }
           : user,
       ),
@@ -158,221 +158,211 @@ export function UserManagement() {
     }
   }
 
-  const getStatusBadge = (status: User["status"]) => {
-    switch (status) {
-      case "checked-in":
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Checked In</Badge>
-      case "checked-out":
-        return <Badge variant="secondary">Checked Out</Badge>
-      case "registered":
-        return <Badge variant="outline">Registered</Badge>
-    }
+const getStatusBadge = (status: User["status"]) => {
+  switch (status) {
+    case "checked-in":
+      return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Giriş Yapmış</Badge>
+    case "checked-out":
+      return <Badge variant="secondary">Çıkış Yapmış</Badge>
+    case "registered":
+      return <Badge variant="outline">Kayıtlı</Badge>
   }
+}
 
   return (
-    <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-4">
-        <StatCard title="Toplam Kullanıcılar" value={users.length} icon={UserIcon} iconColor="text-blue-500" />
-        <StatCard
-          title="Giriş Yapmış"
-          value={users.filter((u) => u.status === "checked-in").length}
-          icon={CheckCircle}
-          iconColor="text-green-500"
-        />
-        <StatCard
-          title="Çıkış Yapmış"
-          value={users.filter((u) => u.status === "checked-out").length}
-          icon={XCircle}
-          iconColor="text-red-500"
-        />
-        <StatCard
-          title="Sadece Kayıtlı"
-          value={users.filter((u) => u.status === "registered").length}
-          icon={AlertCircle}
-          iconColor="text-yellow-500"
-        />
-      </div>
+  <div className="space-y-6">
+    <div className="grid gap-4 md:grid-cols-4">
+      <StatCard title="Toplam Kullanıcılar" value={users.length} icon={UserIcon} iconColor="text-blue-500" />
+      <StatCard
+        title="Giriş Yapmış"
+        value={users.filter((u) => u.status === "checked-in").length}
+        icon={CheckCircle}
+        iconColor="text-green-500"
+      />
+      <StatCard
+        title="Çıkış Yapmış"
+        value={users.filter((u) => u.status === "checked-out").length}
+        icon={XCircle}
+        iconColor="text-red-500"
+      />
+      <StatCard
+        title="Sadece Kayıtlı"
+        value={users.filter((u) => u.status === "registered").length}
+        icon={AlertCircle}
+        iconColor="text-yellow-500"
+      />
+    </div>
 
-      {/* User Management Table */}
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col md:items-center items-start  justify-between md:flex-row">
-            <div className="mb-4 md:mb-0">
-              <CardTitle>User Management</CardTitle>
-              <CardDescription className="text:xs md:text-sm">Manage conference attendees and their status</CardDescription>
-            </div>
-            <div className="flex relative items-center gap-2 w-full md:w-auto">
-              <Button variant="outline" size="sm" className="flex-1">
-                <Download className="h-4 w-4 mr-2" />
-                Export
-              </Button>
-              <Button size="sm" className="flex-1">
-                <UserPlus className="h-4 w-4 mr-2" />
-                Add User
-              </Button>
-            </div>
+    <Card>
+      <CardHeader>
+        <div className="flex flex-col md:items-center items-start justify-between md:flex-row">
+          <div className="mb-4 md:mb-0">
+            <CardTitle>Kullanıcı Yönetimi</CardTitle>
+            <CardDescription className="text:xs md:text-sm">Konferans katılımcılarını ve durumlarını yönetin</CardDescription>
           </div>
-        </CardHeader>
-        <CardContent>
-          {/* Filters */}
-          <div className="flex items-center gap-4 mb-6 flex-col md:flex-row">
-            <div className="relative  flex-1 md:max-w-sm w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search users..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <div className="w-full flex flex-col justify-between items-center md:flex-row md:max-w-fit md:gap-4">
-               <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <div className="flex relative items-center gap-2 w-full md:w-auto">
+            <Button variant="outline" size="sm" className="flex-1">
+              <Download className="h-4 w-4 mr-2" />
+              Dışa Aktar
+            </Button>
+            <Button size="sm" className="flex-1">
+              <UserPlus className="h-4 w-4 mr-2" />
+              Kullanıcı Ekle
+            </Button>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center gap-4 mb-6 flex-col md:flex-row">
+          <div className="relative flex-1 md:max-w-sm w-full">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Kullanıcı ara..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <div className="w-full flex flex-col justify-between items-center md:flex-row md:max-w-fit md:gap-4">
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder="Durum" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="checked-in">Checked In</SelectItem>
-                <SelectItem value="checked-out">Checked Out</SelectItem>
-                <SelectItem value="registered">Registered</SelectItem>
+                <SelectItem value="all">Tüm Durumlar</SelectItem>
+                <SelectItem value="checked-in">Giriş Yapmış</SelectItem>
+                <SelectItem value="checked-out">Çıkış Yapmış</SelectItem>
+                <SelectItem value="registered">Kayıtlı</SelectItem>
               </SelectContent>
             </Select>
             <Select value={roleFilter} onValueChange={setRoleFilter}>
               <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
-                <SelectValue placeholder="Role" />
+                <SelectValue placeholder="Rol" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
-                <SelectItem value="Developer">Developer</SelectItem>
-                <SelectItem value="Designer">Designer</SelectItem>
-                <SelectItem value="Product Manager">Product Manager</SelectItem>
-                <SelectItem value="Student">Student</SelectItem>
+                <SelectItem value="all">Tüm Roller</SelectItem>
+                <SelectItem value="Developer">Geliştirici</SelectItem>
+                <SelectItem value="Designer">Tasarımcı</SelectItem>
+                <SelectItem value="Product Manager">Ürün Yöneticisi</SelectItem>
+                <SelectItem value="Student">Öğrenci</SelectItem>
               </SelectContent>
             </Select>
-            </div>
           </div>
+        </div>
 
-          {/* Bulk Actions */}
-          {selectedUsers.length > 0 && (
-            <div className="flex items-center gap-2 mb-4 p-3 bg-muted rounded-lg">
-              <span className="text-sm font-medium">{selectedUsers.length} users selected</span>
-              <Button variant="outline" size="sm">
-                Check In All
-              </Button>
-              <Button variant="outline" size="sm">
-                Check Out All
-              </Button>
-              <Button variant="outline" size="sm">
-                Send Email
-              </Button>
-            </div>
-          )}
+        {selectedUsers.length > 0 && (
+          <div className="flex items-center gap-2 mb-4 p-3 bg-muted rounded-lg">
+            <span className="text-sm font-medium">{selectedUsers.length} kullanıcı seçildi</span>
+            <Button variant="outline" size="sm">
+              Tümünü Giriş Yaptır
+            </Button>
+            <Button variant="outline" size="sm">
+              Tümünü Çıkış Yaptır
+            </Button>
+            <Button variant="outline" size="sm">
+              E-posta Gönder
+            </Button>
+          </div>
+        )}
 
-          {/* Users Table */}
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">
-                    <Checkbox
-                      checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
-                      onCheckedChange={handleSelectAll}
-                    />
-                  </TableHead>
-                  <TableHead>User</TableHead>
-                  <TableHead>Company</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Check-in Time</TableHead>
-                  <TableHead>Last Seen</TableHead>
-                  <TableHead>Sessions</TableHead>
-                  <TableHead className="w-12"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-12">
+                  <Checkbox
+                    checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
+                    onCheckedChange={handleSelectAll}
+                  />
+                </TableHead>
+                <TableHead>Kullanıcı</TableHead>
+                <TableHead>Şirket</TableHead>
+                <TableHead>Rol</TableHead>
+                <TableHead>Durum</TableHead>
+                <TableHead>Giriş Zamanı</TableHead>
+                <TableHead>Son Görülme</TableHead>
+                <TableHead>Oturumlar</TableHead>
+                <TableHead className="w-12"></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
                 {filteredUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>
-                      <Checkbox
-                        checked={selectedUsers.includes(user.id)}
-                        onCheckedChange={(checked) => handleSelectUser(user.id, checked as boolean)}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
-                          <AvatarFallback>
-                            {user.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="font-medium">{user.name}</div>
-                          <div className="text-sm text-muted-foreground">{user.email}</div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>{user.company}</TableCell>
-                    <TableCell>{user.role}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        {getStatusIcon(user.status)}
-                        {getStatusBadge(user.status)}
-                      </div>
-                    </TableCell>
-                    <TableCell>{user.checkInTime || "-"}</TableCell>
-                    <TableCell>{user.lastSeen || "-"}</TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {user.sessions.slice(0, 2).map((session) => (
-                          <Badge key={session} variant="outline" className="text-xs">
-                            {session}
-                          </Badge>
-                        ))}
-                        {user.sessions.length > 2 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{user.sessions.length - 2}
-                          </Badge>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => setSelectedUser(user)}>View Details</DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleStatusChange(user.id, "checked-in")}>
-                            Check In
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleStatusChange(user.id, "checked-out")}>
-                            Check Out
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>Send Email</DropdownMenuItem>
-                          <DropdownMenuItem>Edit User</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
-
-      <UserProfileModal
-        user={selectedUser}
-        isOpen={!!selectedUser}
-        onClose={() => setSelectedUser(null)}
-        onStatusChange={handleStatusChange}
-      />
+    <TableRow key={user.id}>
+      <TableCell>
+        <Checkbox
+          checked={selectedUsers.includes(user.id)}
+          onCheckedChange={(checked) => handleSelectUser(user.id, checked as boolean)}
+        />
+      </TableCell>
+      <TableCell>
+       <div 
+    className="flex items-center gap-3 cursor-pointer hover:bg-muted/50 rounded-md p-1 transition-colors"
+    onClick={() => setSelectedUser(user)}
+  >
+    <Avatar>
+      <AvatarImage src={user.avatar} />
+      <AvatarFallback>{user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+    </Avatar>
+    <div>
+      <div className="font-medium">{user.name}</div>
+      <div className="text-sm text-muted-foreground">{user.email}</div>
     </div>
+  </div>
+      </TableCell>
+      <TableCell>{user.company}</TableCell>
+      <TableCell>{user.role}</TableCell>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          {getStatusIcon(user.status)}
+          {getStatusBadge(user.status)}
+        </div>
+      </TableCell>
+      <TableCell>{user.checkInTime || "-"}</TableCell>
+      <TableCell>{user.lastSeen || "-"}</TableCell>
+      <TableCell>
+        <div className="flex flex-wrap gap-1">
+          {user.sessions.map((session) => (
+            <Badge key={session} variant="secondary" className="text-xs">
+              {session}
+            </Badge>
+          ))}
+        </div>
+      </TableCell>
+      <TableCell>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <MoreHorizontal className="h-4 w-4" />
+              <span className="sr-only">İşlemler</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setSelectedUser(user)}>Detayları Görüntüle</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleStatusChange(user.id, "checked-in")}>
+              Giriş Yaptır
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleStatusChange(user.id, "checked-out")}>
+              Çıkış Yaptır
+            </DropdownMenuItem>
+            <DropdownMenuItem>E-posta Gönder</DropdownMenuItem>
+            <DropdownMenuItem>Kullanıcıyı Düzenle</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </TableCell>
+    </TableRow>
+  ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
+
+    <UserProfileModal
+      user={selectedUser}
+      isOpen={!!selectedUser}
+      onClose={() => setSelectedUser(null)}
+      onStatusChange={handleStatusChange}
+    />
+  </div>
   )
 }
