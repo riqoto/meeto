@@ -443,10 +443,10 @@ export function QRTracking() {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div>
               <CardTitle>QR Kod Yönetimi</CardTitle>
-              <CardDescription>Farklı etkinlikler ve amaçlar için QR kodları oluşturun ve yönetin</CardDescription>
+              <CardDescription className="text-xs md:text-md">Farklı etkinlikler ve amaçlar için QR kodları oluşturun ve yönetin</CardDescription>
             </div>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
               <DialogTrigger asChild>
@@ -461,7 +461,7 @@ export function QRTracking() {
                   <DialogDescription>
                     Etkinlikleri ve aktiviteleri takip etmek için yeni bir QR kod oluşturun
                   </DialogDescription>
-                </DialogHeader>
+                </DialogHeader >
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">İsim</Label>
@@ -531,17 +531,18 @@ export function QRTracking() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-4 mb-6">
-            <div className="relative flex-1 max-w-sm">
+          <div className="flex items-center gap-4 mb-6 flex-col md:flex-row">
+            <div className="relative  flex-1 md:max-w-sm w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="QR kodları ara..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 w-full"
               />
             </div>
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
+            <div className="w-full flex justify-between items-center   md:max-w-fit md:gap-4 ">
+               <Select value={typeFilter} onValueChange={setTypeFilter}>
               <SelectTrigger className="w-[130px]">
                 <SelectValue placeholder="Tür" />
               </SelectTrigger>
@@ -564,6 +565,7 @@ export function QRTracking() {
                 <SelectItem value="inactive">Pasif</SelectItem>
               </SelectContent>
             </Select>
+            </div>
           </div>
 
           <div className="rounded-md border w-full">
