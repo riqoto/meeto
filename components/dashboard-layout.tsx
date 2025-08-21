@@ -100,34 +100,34 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="h-16 border-b bg-card flex items-center justify-between px-6">
-          <div className="flex items-center gap-4">
-          <Button 
-        variant="ghost" 
-        size="icon" 
-        className="lg:hidden"
-        onClick={setSidebarOpenState}
-      >
-        <Menu className="h-5 w-5" />
-      </Button>
-            <div>
-              <h1 className="text-lg font-semibold">Konferans Analitikleri</h1>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <Badge variant="secondary" className="gap-1">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              Canlı
-            </Badge>
-            <Button variant="ghost" size="icon" onClick={toggleTheme}>
-              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            </Button>
-          </div>
-        </header>
+        <header className="fixed top-0 right-0 left-0 lg:left-64 h-16 border-b flex items-center justify-between px-6 z-50">
+  <div className="flex  items-center gap-4">
+    <Button 
+      variant="ghost" 
+      size="icon" 
+      className="lg:hidden"
+      onClick={setSidebarOpenState}
+    >
+      <Menu className="h-5 w-5" />
+    </Button>
+    <div>
+      <h1 className="text-lg font-semibold">Konferans Analitikleri</h1>
+    </div>
+  </div>
+  <div className="flex items-center gap-4">
+    <Badge variant="secondary" className="gap-1">
+      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+      Canlı
+    </Badge>
+    <Button variant="ghost" size="icon" onClick={toggleTheme}>
+      <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+    </Button>
+  </div>
+</header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-6 pb-12 mt-16">{children}</main>
       </div>
     </div>
   )
