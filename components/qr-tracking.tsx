@@ -450,7 +450,7 @@ export function QRTracking() {
             </div>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button className="w-full md:w-auto">
                   <Plus className="h-4 w-4 mr-2" />
                   QR Kod Oluştur
                 </Button>
@@ -541,9 +541,9 @@ export function QRTracking() {
                 className="pl-10 w-full"
               />
             </div>
-            <div className="w-full flex justify-between items-center   md:max-w-fit md:gap-4 ">
+            <div className="w-full flex flex-col justify-between items-center md:flex-row md:max-w-fit md:gap-4 ">
                <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-[130px]">
+              <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
                 <SelectValue placeholder="Tür" />
               </SelectTrigger>
               <SelectContent>
@@ -556,7 +556,7 @@ export function QRTracking() {
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[120px]">
+              <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
                 <SelectValue placeholder="Durum" />
               </SelectTrigger>
               <SelectContent>

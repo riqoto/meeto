@@ -328,7 +328,7 @@ export function EventLogs() {
               <CardTitle>Etkinlik Günlükleri</CardTitle>
               <CardDescription>Gerçek zamanlı sistem olayları ve kullanıcı aktiviteleri</CardDescription>
             </div>
-            <div className="flex mt-4 items-center gap-2 md:mt-0">
+            <div className="flex justify-between bg-red-300 w-full md:w-auto mt-4 items-center gap-2 md:mt-0">
               <Button
                 variant="outline"
                 size="sm"
@@ -350,8 +350,8 @@ export function EventLogs() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-4 mb-6">
-            <div className="relative flex-1 max-w-sm">
+          <div className="flex items-center gap-4 mb-6 flex-col md:flex-row">
+            <div className="relative  flex-1 md:max-w-sm w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Etkinlikleri ara..."
@@ -360,8 +360,9 @@ export function EventLogs() {
                 className="pl-10"
               />
             </div>
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-[150px]">
+            <div className="w-full flex flex-col justify-between items-center md:flex-row md:max-w-fit md:gap-4">
+              <Select value={typeFilter} onValueChange={setTypeFilter}>
+              <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
                 <SelectValue placeholder="Etkinlik Türü" />
               </SelectTrigger>
               <SelectContent>
@@ -377,7 +378,7 @@ export function EventLogs() {
               </SelectContent>
             </Select>
             <Select value={severityFilter} onValueChange={setSeverityFilter}>
-              <SelectTrigger className="w-[120px]">
+              <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
                 <SelectValue placeholder="Önem Derecesi" />
               </SelectTrigger>
               <SelectContent>
@@ -388,6 +389,7 @@ export function EventLogs() {
                 <SelectItem value="critical">Kritik</SelectItem>
               </SelectContent>
             </Select>
+            </div>
           </div>
 
           <div className="rounded-md border w-full">

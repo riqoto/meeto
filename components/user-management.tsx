@@ -196,17 +196,17 @@ export function UserManagement() {
       {/* User Management Table */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
+          <div className="flex flex-col md:items-center items-start  justify-between md:flex-row">
+            <div className="mb-4 md:mb-0">
               <CardTitle>User Management</CardTitle>
-              <CardDescription>Manage conference attendees and their status</CardDescription>
+              <CardDescription className="text:xs md:text-sm">Manage conference attendees and their status</CardDescription>
             </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
+            <div className="flex relative items-center gap-2 w-full md:w-auto">
+              <Button variant="outline" size="sm" className="flex-1">
                 <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
-              <Button size="sm">
+              <Button size="sm" className="flex-1">
                 <UserPlus className="h-4 w-4 mr-2" />
                 Add User
               </Button>
@@ -215,8 +215,8 @@ export function UserManagement() {
         </CardHeader>
         <CardContent>
           {/* Filters */}
-          <div className="flex items-center gap-4 mb-6">
-            <div className="relative flex-1 max-w-sm">
+          <div className="flex items-center gap-4 mb-6 flex-col md:flex-row">
+            <div className="relative  flex-1 md:max-w-sm w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search users..."
@@ -225,8 +225,9 @@ export function UserManagement() {
                 className="pl-10"
               />
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[150px]">
+            <div className="w-full flex flex-col justify-between items-center md:flex-row md:max-w-fit md:gap-4">
+               <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -237,7 +238,7 @@ export function UserManagement() {
               </SelectContent>
             </Select>
             <Select value={roleFilter} onValueChange={setRoleFilter}>
-              <SelectTrigger className="w-[150px]">
+              <SelectTrigger className="md:w-[150px] w-full my-2 md:my-0">
                 <SelectValue placeholder="Role" />
               </SelectTrigger>
               <SelectContent>
@@ -248,6 +249,7 @@ export function UserManagement() {
                 <SelectItem value="Student">Student</SelectItem>
               </SelectContent>
             </Select>
+            </div>
           </div>
 
           {/* Bulk Actions */}
