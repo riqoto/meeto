@@ -27,6 +27,12 @@ interface User {
   lastSeen?: string
   sessions: string[]
   avatar?: string
+  socialLinks?: SocialLink[]
+}
+
+interface SocialLink {
+  platform: 'linkedin' | 'twitter' | 'github' | 'instagram' | 'youtube' | 'website'
+  url: string
 }
 
 const mockUsers: User[] = [
@@ -42,6 +48,11 @@ const mockUsers: User[] = [
     lastSeen: "2 dk önce",
     sessions: ["Açılış Konuşması", "Teknoloji Sunumu A"],
     avatar: "/placeholder.svg?height=40&width=40",
+    socialLinks: [
+      { platform: 'linkedin', url: '' },
+      { platform: 'github', url: '' },
+      { platform: 'twitter', url: '' }
+    ]
   },
   {
     id: "2",
@@ -55,6 +66,10 @@ const mockUsers: User[] = [
     lastSeen: "5 dk önce",
     sessions: ["Atölye B", "Panel Tartışması"],
     avatar: "/placeholder.svg?height=40&width=40",
+     socialLinks: [
+      { platform: 'instagram', url: '' },
+      { platform: 'website', url: '' }
+    ]
   },
   {
     id: "3",
@@ -68,6 +83,10 @@ const mockUsers: User[] = [
     lastSeen: "1 saat önce",
     sessions: ["Açılış Konuşması"],
     avatar: "/placeholder.svg?height=40&width=40",
+    socialLinks: [
+      { platform: 'linkedin', url: '' },
+      { platform: 'twitter', url: '' }
+    ]
   },
   {
     id: "4",
@@ -79,6 +98,10 @@ const mockUsers: User[] = [
     status: "registered",
     sessions: [],
     avatar: "/placeholder.svg?height=40&width=40",
+     socialLinks: [
+      { platform: 'github', url: '' },
+      { platform: 'youtube', url: '' }
+    ]
   },
   {
     id: "5",
@@ -92,6 +115,11 @@ const mockUsers: User[] = [
     lastSeen: "10 dk önce",
     sessions: ["Teknoloji Sunumu A", "Atölye B", "Networking"],
     avatar: "/placeholder.svg?height=40&width=40",
+     socialLinks: [
+      { platform: 'linkedin', url: '' },
+      { platform: 'github', url: '' },
+      { platform: 'website', url: '' }
+    ]
   },
 ]
 

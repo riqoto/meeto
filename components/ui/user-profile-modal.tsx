@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { Mail, Phone, Clock, MapPin, Calendar, User, Building } from "lucide-react"
+import { Mail, Phone, Clock, MapPin, Calendar, User, Building, Linkedin, Twitter, Github, Instagram, Youtube, Globe, Contact } from "lucide-react"
 
 interface UserProfileModalProps {
   user: {
@@ -22,6 +22,10 @@ interface UserProfileModalProps {
     avatar?: string
     location?: string
     registrationDate?: string
+    socialLinks?: {
+      platform: 'linkedin' | 'twitter' | 'github' | 'instagram' | 'youtube' | 'website'
+      url: string
+    }[]
   } | null
   isOpen: boolean
   onClose: () => void
@@ -30,6 +34,18 @@ interface UserProfileModalProps {
 
 export function UserProfileModal({ user, isOpen, onClose, onStatusChange }: UserProfileModalProps) {
   if (!user) return null
+
+  const getSocialIcon = (platform: string) => {
+    switch (platform) {
+      case 'linkedin': return <Linkedin className="h-4 w-4 text-[#0077B5]" />
+      case 'twitter': return <Twitter className="h-4 w-4 text-[#1DA1F2]" />
+      case 'github': return <Github className="h-4 w-4 text-[#666]" />
+      case 'instagram': return <Instagram className="h-4 w-4 text-[#E4405F]" />
+      case 'youtube': return <Youtube className="h-4 w-4 text-[#FF0000]" />
+      case 'website': return <Globe className="h-4 w-4 text-blue-700" />
+      default: return null
+    }
+  }
 
   const getStatusBadge = (status?: string) => {
     switch (status) {
@@ -172,7 +188,35 @@ export function UserProfileModal({ user, isOpen, onClose, onStatusChange }: User
               </div>
             </div>
           )}
-
+          <div className="space-y-4">
+             <Label className="text-sm font-medium flex items-center gap-2">
+                  <Contact className="h-4 w-4" />
+                  Sosyal Medya Bağlantıları
+                </Label>
+                <div className="flex gap-2">
+                  {user.socialLinks && user.socialLinks.length > 0 ? (
+                    
+                    user.socialLinks.map((link, index) => (
+                      
+                      <a
+                        key={index}
+                        href={link.url || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/30 transition-colors"
+                      >
+                        {getSocialIcon(link.platform)}
+                        <span className="text-xs">{link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}</span>
+                      </a>
+                     
+                    ))
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      Henüz sosyal medya bağlantısı eklenmemiş
+                    </p>
+                  )}
+                   </div>
+            </div>
           {/* Action Buttons */}
           <div className="flex gap-2 pt-4">
             {onStatusChange && user.status !== "checked-in" && (
